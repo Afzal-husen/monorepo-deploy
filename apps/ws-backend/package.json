@@ -1,0 +1,24 @@
+{
+  "name": "ws-backend",
+  "module": "src/index.ts",
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "dev": "bun run --watch --hot src/index.ts",
+    "start:ws": "cd apps/ws-backend && bun run src/index.ts",
+    "generate:db": "cd packages/db && bunx prisma generate"
+  },
+  "dependencies": {
+    "@repo/db": "workspace:*"
+  },
+  "devDependencies": {
+    "@repo/typescript-config": "workspace:*",
+    "@types/bun": "latest"
+  },
+  "peerDependencies": {
+    "typescript": "^5.0.0"
+  }
+}
