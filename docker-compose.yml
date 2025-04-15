@@ -1,10 +1,9 @@
-version: '3.9'
+version: "3.8"
 
 services:
-  http-backend:
-
+  backend:
     build:
-      context: .
+      context: ./
       dockerfile: docker/Dockerfile.backend
     ports:
       - "3001:3001"
@@ -12,31 +11,37 @@ services:
       - DATABASE_URL=postgresql://postgres:Dafzal96@postgres:5432/monorepo-docker
     depends_on:
       - postgres
-  ws-backend:
-    build:
-      context: .
-      dockerfile: docker/Dockerfile.ws
-      ports:
-       - 8080:8080
-      environment: 
-        - DATABASE_URL=postgresql://postgres:Dafzal96@postgres:5432/monorepo-docker
-    depends_on:
-      - postgres
   frontend:
     build:
-      context: .
+      context: ./
       dockerfile: docker/Dockerfile.frontend
+      args:
+        - DATABASE_URL=postgresql://postgres:Dafzal96@postgres:5432/monorepo-docker
     ports:
       - "3000:3000"
     environment:
       - DATABASE_URL=postgresql://postgres:Dafzal96@postgres:5432/monorepo-docker
     depends_on:
       - postgres
-    
+  ws:
+    build:
+      context: ./
+      dockerfile: docker/Dockerfile.ws
+    ports:
+      - "8081:8081"
+    environment:
+      - DATABASE_URL=postgresql://postgres:Dafzal96@postgres:5432/monorepo-docker
+    depends_on:
+      - postgres
+
   postgres:
     image: postgres
     environment:
       - POSTGRES_PASSWORD=Dafzal96
     ports:
       - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
+volumes:
+  postgres_data:

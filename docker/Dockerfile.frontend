@@ -1,18 +1,20 @@
-FROM oven/bun
-
-ARG DB_URL
+FROM oven/bun:1
 
 WORKDIR /usr/src/app
 
-COPY . .
+ARG DATABASE_URL
+COPY ./packages ./packages
+COPY ./bun.lockb ./bun.lockb
+
+COPY ./package.json ./package.json
+COPY ./turbo.json ./turbo.json
+
+COPY ./apps/web ./apps/web
 
 RUN bun install
-
-
 RUN bun run generate:db
-RUN DB_URL=$DB_URL bunx turbo build --filter=web
+RUN DATABASE_URL=${DATABASE_URL} bun run build
 
 EXPOSE 3000
 
-CMD ["bun", "run", "start"]
-
+CMD ["bun", "run", "start:web"]

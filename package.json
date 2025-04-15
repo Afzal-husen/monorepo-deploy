@@ -6,7 +6,11 @@
     "dev": "turbo run dev",
     "lint": "turbo run lint",
     "format": "prettier --write \"**/*.{ts,tsx,md}\"",
-    "check-types": "turbo run check-types"
+    "check-types": "turbo run check-types",
+    "generate:db": "cd packages/db && npx prisma generate && cd ../..",
+    "start:web": "cd apps/web && bun run start",
+    "start:http": "cd apps/http-backend && bun run index.ts",
+    "start:ws": "cd apps/ws-backend && bun run index.ts"
   },
   "devDependencies": {
     "@types/express": "^5.0.1",
